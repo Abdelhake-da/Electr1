@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Elect1Ammad.jnlp">
+  <information>
+    <title>Elect1Ammad</title>
+    <vendor>Mr_Abdelhake</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Elect1Ammad.jar" size="13690" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="800" height="600" main-class="elect1ammad.Elect1Ammad"  name="Elect1Ammad" />
+  <update check="always"/>
+</jnlp>
