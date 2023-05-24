@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javafx.scene.control.TextArea;
 
 /**
  *
@@ -46,7 +47,7 @@ public class Opperation {
             System.out.println("");
         }
     }
-    
+
     public void afficheVect(int[] mat) {
         for (int mat1 : mat) {
             System.out.println(mat + " | ");
@@ -93,12 +94,13 @@ public class Opperation {
         return records;
     }
 
-    public void creatCSVFile(String csvData ,String nameFile) throws IOException {
-        String filePath = "src\\data\\"+nameFile+".csv";
+    public void creatCSVFile(String csvData, String nameFile) throws IOException {
+        String filePath = "src\\data\\" + nameFile + ".csv";
         try ( BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             // Write the CSV data to the file
             writer.write(csvData);
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
     }
 
     public Parametre creatMatrice(List l) {
@@ -145,27 +147,49 @@ public class Opperation {
         return mc;
     }
 
-    public double[][] creatMdiscordance(double[][] mp) {
+    public double[][] creatMdiscordance(double[][] mp, TextArea txt) {
+        String str = "";
+        double Max = getMax(mp);
+        double Min = getMin(mp);
+        double Gi;
+        double Gj;
+        double max;
+
         double[][] md = new double[mp.length][mp.length];
         for (int i = 0; i < md.length; i++) {
+
             for (int j = 0; j < md.length; j++) {
+                max = 0;
                 if (i == j) {
                     md[i][j] = -1;
                 } else {
-                    double delta = getMax(mp) - getMin(mp);
-                    double max = 0;
+
+                    double delta = Max - Min;
+                    str += "D(P" + (i + 1) + ",P" + (j + 1) + ")\n= max(";
                     for (int k = 0; k < mp[0].length; k++) {
-                        if (mp[i][k] < mp[j][k]) {
+                        Gi = mp[i][k];
+                        Gj = mp[j][k];
+                        if (Gi < Gj) {
+                            str += "" + Gi + "-" + Gj + " ,";
                             if (mp[j][k] - mp[i][k] > max) {
                                 max = mp[j][k] - mp[i][k];
                             }
+                        } else {
+                            str += "0 ,";
                         }
                     }
+                    str += ") / (" + Max + "-" + Min + ")\n";
                     md[i][j] = max / delta;
+                    str += "= " + max + " / " + delta + " = " + md[i][j] + "\n";
+
+                    str += "=============================================================\n";
+
                 }
             }
         }
+        txt.setText(str);
         return md;
+
     }
 
     public double[][] creatMsurclassement(double[][] mc, double[][] md, double d, double c) {
@@ -185,38 +209,45 @@ public class Opperation {
         }
         return ms;
     }
-    
-    public int[] sommeDeUn(double[][] ms){
+
+    public int[] sommeDeUn(double[][] ms, TextArea txt) {
         int[] sommes = new int[ms.length];
-        
+        String str = "";
         for (int i = 0; i < ms.length; i++) {
-            int somme=0;
+            int somme = 0;
             for (int j = 0; j < ms.length; j++) {
                 somme += ms[i][j];
             }
-            System.out.println(somme+1);
-            sommes[i] = somme+1;
+
+            sommes[i] = somme + 1;
         }
-        
-        return tri(sommes);
+        txt.setText(tri(sommes));
+        return sommes;
     }
-    public int[] tri(int[] vect){
-        for (int i = 0; i < vect.length-1; i++) {
-            for (int j = i; j < vect.length; j++) {
-                int a ;
-                if(vect[i]<vect[j]){
-                    a = vect[j];
-                    vect[j] = vect[i];
-                    vect[i] = a;
+
+    public String tri(int[] vect) {
+        int[] v = vect;
+        String str = "";
+        int pre ;
+        int indis ;
+        int[] tree = new int[v.length];
+        for (int i = 0; i < tree.length; i++) {
+            pre = v[i];
+            indis = i;
+            v[i] = -1;
+            for (int j = 0; j < v.length; j++) {
+                if (v[j] > pre) {
+                    v[indis] = pre;
+                    pre = v[j];
+                    indis = j;
+                    v[j] = -1;
                 }
             }
+            str += (i + 1) + "- P" + (indis + 1) + " = " + pre + "\n";
+            
         }
-        return vect;
-    }
-    public String afficheCalcul(){
-        
-        return null;
-        
+
+        return str;
     }
 }
 //un tri le vect sommes

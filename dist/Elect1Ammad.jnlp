@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Elect1Ammad.jar" size="13690" download="eager" />
+    <jar href="Elect1Ammad.jar" size="14963" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="elect1ammad.Elect1Ammad"  name="Elect1Ammad" />
   <update check="always"/>

@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -22,7 +23,7 @@
                      <children>
                         <RadioButton fx:id="rb1" mnemonicParsing="false" onAction="#showData" selected="true" text="Matrice de Performance ">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                            <toggleGroup>
                               <ToggleGroup fx:id="g1" />
@@ -30,25 +31,30 @@
                         </RadioButton>
                         <RadioButton fx:id="rb2" mnemonicParsing="false" onAction="#showData" text="Matrice de concordance " toggleGroup="$g1">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                         </RadioButton>
                      </children>
                   </VBox>
-                  <VBox prefHeight="40.0" spacing="10.0">
+                  <VBox prefHeight="48.0" prefWidth="195.0" spacing="10.0">
                      <children>
                         <RadioButton fx:id="rb3" mnemonicParsing="false" onAction="#showData" prefWidth="209.0" text="Matrice de discordance " toggleGroup="$g1">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false" onAction="#showData" text="Matrice de  surclassement" toggleGroup="$g1">
+                        <RadioButton fx:id="rb4" mnemonicParsing="false" onAction="#showData" text="Matrice de  surclassement" toggleGroup="$g1">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                         </RadioButton>
                      </children>
                   </VBox>
+                  <RadioButton fx:id="rb31" mnemonicParsing="false" onAction="#showData" prefHeight="19.0" prefWidth="267.0" text="Afficher les calcule et le classement" toggleGroup="$g1">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </RadioButton>
                </children>
             </HBox>
             <HBox alignment="CENTER" layoutX="1.0" layoutY="445.0" prefHeight="38.0" prefWidth="686.0" spacing="60.0">
@@ -74,7 +80,22 @@
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" layoutY="54.0" prefHeight="302.0" prefWidth="686.0">
+            <HBox fx:id="hba" alignment="CENTER" layoutX="14.0" layoutY="54.0" prefHeight="318.0" prefWidth="660.0" spacing="5.0" visible="false">
+               <children>
+                  <TextArea fx:id="calc" prefHeight="318.0" prefWidth="481.0">
+                     <font>
+                        <Font name="Consolas Bold" size="12.0" />
+                     </font>
+                  </TextArea>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" />
+                  <TextArea fx:id="tree" prefHeight="318.0" prefWidth="180.0">
+                     <font>
+                        <Font name="Consolas Bold" size="13.0" />
+                     </font>
+                  </TextArea>
+               </children>
+            </HBox>
+            <HBox fx:id="hbt" alignment="CENTER" layoutY="54.0" prefHeight="302.0" prefWidth="686.0">
                <children>
                   <TableView fx:id="table" cacheShape="false" editable="true" prefHeight="314.0" prefWidth="660.0">
                      <columnResizePolicy>

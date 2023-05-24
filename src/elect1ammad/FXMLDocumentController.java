@@ -18,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 
 /**
@@ -33,7 +34,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableView<MatrixElement> table;
     @FXML
-    private RadioButton rb1, rb2, rb3;
+    private RadioButton rb1, rb2, rb3, rb4;
     @FXML
     private AnchorPane newAncor;
     @FXML
@@ -41,14 +42,17 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField cText, dText, poidText, nameText;
     @FXML
-    private TextArea matText;
+    private TextArea matText, calc, tree;
+    @FXML
+    private HBox hbt, hba;
     String path = "";
     boolean isPerf = true;
+    boolean isShow = true;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //        String path = fc.showOpenDialog(null).getPath();
-        path = "C:\\Users\\Mr_Abdelhake\\Documents\\NetBeansProjects\\Elect1Ammad\\src\\data\\input.csv";
+        path = "src\\data\\input.csv";
         List l = opp.readCSV(path);
         dataSeter(l);
         showData();
@@ -60,33 +64,41 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public void showData() {
+
         clearTable();
         double[][] mat = getMatrix();
-        // Create columns dynamically based on matrix dimensions
-        for (int i = 0; i < mat[0].length + 1; i++) {
-            TableColumn<MatrixElement, String> column;
-            if (i == 0) {
-                column = new TableColumn<>("");
-            } else {
-                if (isPerf) {
-                    column = new TableColumn<>("C" + (i));
+        if (mat != null) {
+            // Create columns dynamically based on matrix dimensions
+            for (int i = 0; i < mat[0].length + 1; i++) {
+                TableColumn<MatrixElement, String> column;
+                if (i == 0) {
+                    column = new TableColumn<>("");
                 } else {
-                    column = new TableColumn<>("P" + (i));
+                    if (isPerf) {
+                        column = new TableColumn<>("C" + (i));
+                    } else {
+                        column = new TableColumn<>("P" + (i));
+                    }
                 }
-            }
 
-            final int columnIndex = i;
-            column.setCellValueFactory(cellData -> cellData.getValue().getValue(columnIndex));
-            table.getColumns().add(column);
+                final int columnIndex = i;
+                column.setCellValueFactory(cellData -> cellData.getValue().getValue(columnIndex));
+                table.getColumns().add(column);
+            }
+            // Populate the table with data from the matrix
+            for (int row = 0; row < mat.length; row++) {
+                table.getItems().add(new MatrixElement(opp.convertDoubleMatrixToString(mat)[row]));
+            }
+            table.refresh();
+
         }
-        // Populate the table with data from the matrix
-        for (int row = 0; row < mat.length; row++) {
-            table.getItems().add(new MatrixElement(opp.convertDoubleMatrixToString(mat)[row]));
-        }
-        table.refresh();
+
     }
 
     public double[][] getMatrix() {
+        hbt.setVisible(true);
+        hba.setVisible(false);
+        isShow = true;
         if (rb1.isSelected()) {
             isPerf = true;
             return parametre.getMPerf();
@@ -99,8 +111,16 @@ public class FXMLDocumentController implements Initializable {
                 if (rb3.isSelected()) {
                     return var.getDiscordance();
                 } else {
-                    opp.sommeDeUn(var.getSurclassment());
-                    return var.getSurclassment();
+                    if (rb4.isSelected()) {
+                        return var.getSurclassment();
+                    } else {
+                        hbt.setVisible(false);
+                        opp.sommeDeUn(var.getSurclassment(), tree);
+                        hba.setVisible(true);
+                        isShow = false;
+                        return null;
+                    }
+
                 }
             }
         }
@@ -119,7 +139,7 @@ public class FXMLDocumentController implements Initializable {
     public void dataSeter(List l) {
         parametre = opp.creatMatrice(l);
         var.setCorcandance(opp.creatMCorcondance(parametre.getMPerf(), parametre.getPoid()));
-        var.setDiscordance(opp.creatMdiscordance(parametre.getMPerf()));
+        var.setDiscordance(opp.creatMdiscordance(parametre.getMPerf(), calc));
         var.setSurclassment(opp.creatMsurclassement(var.getCorcandance(), var.getDiscordance(), parametre.getD(), parametre.getC()));
         showData();
     }
